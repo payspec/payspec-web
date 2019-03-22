@@ -4,63 +4,175 @@ import Vue from 'vue';
 
 
 
-import DashboardRenderer from './dashboard-renderer'
+//const relayConfig = require('../../../relay.config').config
+var io = require('socket.io-client');
 
-var dashboardRenderer = new DashboardRenderer();
 
+var app;
+var dashboardData;
+
+
+var solutiontxlist;
+var transfertxlist;
+var jumbotron;
+var stats;
+var packetslist;
+var queuedtxlist;
 
 export default class HomeRenderer {
 
-    init( ethHelper )
+    init( packetRenderer )
     {
 
+      var self = this;
+
+      this.transactionListData = {
+        txData: [ ]
+      }
+
+
+      var current_hostname = window.location.hostname;
+
+      var port = relayConfig.websocketsPort || 4000;
+
+      const socketServer = 'http://'+current_hostname+':'+port;
+
+      const options = {transports: ['websocket'], forceNew: true};
+      this.socket = io(socketServer, options);
+
+
+      // Socket events
+      this.socket.on('connect', () => {
+        console.log('connected to socket.io server');
+      });
+
+
+      this.socket.on('disconnect', () => {
+        console.log('disconnected from socket.io server');
+      });
 
 
 
-     setInterval( function(){
+
+      this.socket.on('relayData', function (data) {
+
+          console.log('relay data ', data )
+
+          Vue.set(stats, 'relayData',  data )
 
 
-         ethHelper.connectToContract( web3 , dashboardRenderer, function(contractData){
-
-           dashboardRenderer.update(contractData);
-
-         } );
-
-      },30 * 1000);
+          packetRenderer.updatePacketFeeStats( data )
 
 
+      });
+
+      this.socket.on('lavaPackets', function (data) {
+
+          console.log('lava packets ', data )
+
+          Vue.set(packetslist, 'list',  data )
+
+      });
+
+      this.socket.on('queuedTx', function (data) {
+
+          console.log('queued lava packets ', data )
+
+          Vue.set(queuedtxlist, 'list',  data )
+
+      });
 
 
-        ethHelper.connectToContract( web3 , dashboardRenderer, function(contractData){
 
-          dashboardRenderer.init(contractData);
+      solutiontxlist = new Vue({
+          el: '#solutiontxlist',
+          data: {
+            //parentMessage: 'Parent',
+            transactions: {
+              tx_list: this.transactionListData.txData
+            }
+          }
+        })
 
-        } );
+       transfertxlist = new Vue({
+            el: '#transfertxlist',
+            data: {
+              //parentMessage: 'Parent',
+              transactions: {
+                tx_list: this.transactionListData.txData
+              }
+            }
+          })
+
+
+         jumbotron = new Vue({
+        el: '#jumbotron',
+        data:{
+          relayName: relayConfig.name
+         }
+      });
+
+
+
+         stats = new Vue({
+              el: '#stats',
+              data:{
+                relayData: {}
+               }
+            });
+
+            packetslist = new Vue({
+                 el: '#packetslist',
+                 data:{
+                   list: []
+                  }
+               });
+
+           queuedtxlist = new Vue({
+                el: '#queuedtx',
+                data:{
+                  list: []
+                 }
+              });
 
 
 
 
 
+      $('.mining-instructions-container').hide();
 
- 
+      $('.toggle-mining-instructions').on('click',function(){
+          $('.mining-instructions-container').toggle();
+      });
 
-      console.log('init home')
+
+
+      console.log('Emit to websocket')
+  //     this.socket.emit('getRelayData');
+       this.socket.emit('getLavaPackets');
+        this.socket.emit('getQueuedTx');
+    }
+
+
+    getFormattedStatus(receiptData)
+    {
+        if(receiptData.success) return 'success';
+      if(receiptData.mined) return 'mined';
+      if(receiptData.pending) return 'pending';
+      if(receiptData.queued) return 'queued';
+      return '?'
+    }
+
+
+     update(renderData)
+    {
+
+      this.socket.emit('getRelayData');
+      this.socket.emit('getLavaPackets');
+      this.socket.emit('getQueuedTx');
 
     }
 
-     update( )
-    {
 
-    }
-
-    hide()
-    {
-
-    }
-
-    show()
-    {
-
-    }
 
 }

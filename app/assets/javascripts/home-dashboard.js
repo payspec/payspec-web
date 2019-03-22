@@ -1,33 +1,29 @@
 
 const $ = require('jquery');
 
+import EthHelper from './eth-helper'
 
+
+var ethHelper;
 
 export default class HomeDashboard {
 
 
-  init(ethHelper,web3,dashboardRenderer)
+  init(renderer)
   {
     setInterval( function(){
-      console.log("updating contract data")
-
-       ethHelper.connectToContract( web3 , dashboardRenderer, function(contractData){
-
-         dashboardRenderer.update(contractData);
-
-       } );
+         renderer.update();
+         packetRenderer.update()
+    },5*1000);
 
 
 
-    },30*1000);
 
-      ethHelper.connectToContract( web3 , dashboardRenderer, function(contractData){
+    ethHelper = new EthHelper(   );
+    ethHelper.init();
 
-        dashboardRenderer.init(contractData);
+ 
 
-      } );
   }
-
-
 
 }
