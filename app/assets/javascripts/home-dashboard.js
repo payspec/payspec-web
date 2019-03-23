@@ -22,8 +22,13 @@ export default class HomeDashboard {
     ethHelper = new EthHelper(   );
     ethHelper.init();
 
+
+
     renderer.init( ethHelper );
 
+    ethHelper.bindOnConnected( function() {
+        renderer.onWeb3Connected();
+      })
 
   }
 

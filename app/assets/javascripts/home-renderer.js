@@ -20,6 +20,10 @@ var dashboardData;
 var nametagInput;
 var namesList;
 
+var tokenIdQuery;
+var tokenNameQuery;
+var tokenOwnerQuery;
+
 var jumbotron;
 var stats;
 
@@ -34,46 +38,7 @@ export default class HomeRenderer {
 
 
 
-    /*  var current_hostname = window.location.hostname;
 
-      var port =  4000;
-
-      const socketServer = 'http://'+current_hostname+':'+port;
-
-      const options = {transports: ['websocket'], forceNew: true};
-      this.socket = io(socketServer, options);
-
-
-      // Socket events
-      this.socket.on('connect', () => {
-        console.log('connected to socket.io server');
-      });
-
-
-      this.socket.on('disconnect', () => {
-        console.log('disconnected from socket.io server');
-      });
-
-
-
-
-
-      this.socket.on('lavaPackets', function (data) {
-
-          console.log('lava packets ', data )
-
-          Vue.set(packetslist, 'list',  data )
-
-      });
-
-      this.socket.on('queuedTx', function (data) {
-
-          console.log('queued lava packets ', data )
-
-          Vue.set(queuedtxlist, 'list',  data )
-
-      });
-*/
 
 
       nametagInput = new Vue({
@@ -102,22 +67,76 @@ export default class HomeRenderer {
 
 
 
-            namesList = new Vue({
-                 el: '#nameslist',
-                 data:{
-                   list: []
+    }
+
+    async onWeb3Connected()
+    {
+      var self = this;
+        console.log('on web3 connected')
+
+
+        tokenIdQuery = new Vue({
+            el: '#tokenIdQuery',
+            data: {
+               queryName: '',
+               tokenIdResult: ''
+            },
+            methods: {
+                  onSubmit: function (event){
+                    self.queryTokenId( this.queryName )
                   }
-               });
+              }
+          })
+
+
+          tokenNameQuery = new Vue({
+              el: '#tokenNameQuery',
+              data: {
+                 queryId: '',
+                 tokenNameResult: ''
+              },
+              methods: {
+                    onSubmit: function (event){
+                      self.queryTokenName( this.queryId )
+                    }
+                }
+            })
+
+
+            tokenOwnerQuery = new Vue({
+                el: '#tokenOwnerQuery',
+                data: {
+                   queryName: '',
+                   ownerResult: '',
+                   ownerURL: ''
+                },
+                methods: {
+                      onSubmit: function (event){
+                        self.queryTokenOwner( this.queryName )
+                      }
+                  }
+              })
+
+              namesList = new Vue({
+                   el: '#nameslist',
+                   data:{
+                     list: []
+                    }
+                 });
 
 
 
 
 
-              self.updateNamesList()
+                self.updateNamesList()
 
-              setInterval(function(){ self.updateNamesList()   },8000)
+                setInterval(function(){ self.updateNamesList()   },8000)
+
+
+
 
     }
+
 
     async claimName(name)
     {
@@ -139,6 +158,99 @@ export default class HomeRenderer {
 
 
     }
+
+    async queryTokenOwner(name)
+    {
+
+
+            var web3 = ethereumHelper.getWeb3Instance();
+
+             if(!web3) return;
+
+            var env = 'mainnet'
+
+            var nametagContract = ContractInterface.getNametagContract(web3,env)
+
+
+            var tokenIdRaw =  await new Promise(function (result,error) {
+               nametagContract.nameToTokenId.call(name, function(err,res){
+                  if(err){ return error(err)}
+
+                  result(res);
+               })
+             });
+
+             var tokenIdNumber =  new BigNumber(tokenIdRaw).toFixed();
+
+             var tokenOwnerAddress =  await new Promise(function (result,error) {
+                nametagContract.ownerOf.call(tokenIdNumber, function(err,res){
+                   if(err){ return error(err)}
+
+                   result(res);
+                })
+              });
+
+
+             Vue.set(tokenOwnerQuery, 'ownerResult', tokenOwnerAddress)
+              Vue.set(tokenOwnerQuery, 'ownerURL', 'https://etherscan.io/address/' + tokenOwnerAddress)
+
+
+    }
+
+    async queryTokenId(name)
+    {
+
+
+            var web3 = ethereumHelper.getWeb3Instance();
+
+             if(!web3) return;
+
+            var env = 'mainnet'
+
+            var nametagContract = ContractInterface.getNametagContract(web3,env)
+
+
+            var tokenIdRaw =  await new Promise(function (result,error) {
+               nametagContract.nameToTokenId.call(name, function(err,res){
+                  if(err){ return error(err)}
+
+                  result(res);
+               })
+             });
+
+             var tokenIdNumber =  new BigNumber(tokenIdRaw).toFixed();
+
+             Vue.set(tokenIdQuery, 'tokenIdResult', tokenIdNumber)
+
+
+
+    }
+
+    async queryTokenName(tokenId)
+    {
+
+
+            var web3 = ethereumHelper.getWeb3Instance();
+
+             if(!web3) return;
+
+            var env = 'mainnet'
+
+            var nametagContract = ContractInterface.getNametagContract(web3,env)
+
+
+            var tokenName =  await new Promise(function (result,error) {
+               nametagContract.tokenURI.call(tokenId, function(err,res){
+                  if(err){ return error(err)}
+
+                  result(res);
+               })
+             });
+
+             Vue.set(tokenNameQuery, 'tokenNameResult', tokenName)
+
+    }
+
 
     async checkNameAvailability(name)
     {
@@ -283,8 +395,11 @@ export default class HomeRenderer {
 
 
                 console.log('learned', nameData)
+                if(recentNames.length< 25)
+                {
+                    recentNames.push(nameData)
+                }
 
-                recentNames.push(nameData)
 
               }
 

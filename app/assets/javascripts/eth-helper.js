@@ -31,6 +31,8 @@ import Vue from 'vue'
 var ethContainer;
 var packetRenderer;
 
+var onConnectedCallback;
+
 export default class EthHelper {
 
 
@@ -38,6 +40,12 @@ export default class EthHelper {
     {
          packetRenderer = packRenderer;
 
+    }
+
+
+    bindOnConnected(callback)
+    {
+        onConnectedCallback = callback;
     }
 
 
@@ -113,6 +121,11 @@ export default class EthHelper {
             self.renderError('Non-Ethereum browser detected. You should consider trying MetaMask!');
         }
 
+
+        if(onConnectedCallback)
+        {
+          onConnectedCallback()
+        }
 
    }
 
