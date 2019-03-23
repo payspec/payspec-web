@@ -228,7 +228,7 @@ export default class HomeRenderer {
               console.log(r);
           })*/
 
-          const _MINT_TOPIC = "0xcf6fbb9dcea7d07263ab4f5c3a92f53af33dffc421d9d121e1c74b307e68189d";
+        /*  const _MINT_TOPIC = "0xcf6fbb9dcea7d07263ab4f5c3a92f53af33dffc421d9d121e1c74b307e68189d";
           web3.eth.filter({
             fromBlock: (currentEthBlock-3000),
                 toBlock: currentEthBlock,
@@ -238,7 +238,59 @@ export default class HomeRenderer {
             console.log(error)
              console.log("got filter results:", result, "transactions");
 
-           });
+           });*/
+
+           const _CONTRACT_ADDRESS = "0x3c642be0bb6cb9151652b999b26d80155bcea7de"
+           const _TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+
+           var recentNames = []
+
+           await web3.eth.filter({
+             fromBlock: (currentEthBlock-3000),
+                 toBlock: currentEthBlock,
+                 address: _CONTRACT_ADDRESS,
+                 topics: [_TRANSFER_TOPIC, null],
+           }, async function(error,result)  {
+
+              var fromAddress = result.topics[1];
+              var toAddress = result.topics[2];
+              var tokenIdHex = result.topics[3];
+              var tokenIdNumber =  new BigNumber(tokenIdHex).toFixed();
+
+
+          //    var tokenName = await nametagContract.tokenURI.call( )
+
+              var tokenName =  await new Promise(function (result,error) {
+                 nametagContract.tokenURI.call(tokenIdNumber, function(err,res){
+                    if(err){ return error(err)}
+
+                    result(res);
+                 })
+               });
+
+
+
+              if(fromAddress == '0x0000000000000000000000000000000000000000000000000000000000000000')
+              {
+                var nameData = {
+                  to:  toAddress,
+                  tokenIdHex: tokenIdHex,
+                  tokenIdNumber: tokenIdNumber,
+                  tokenName: tokenName,
+                  tokenURL: 'https://etherscan.io/token/'+_CONTRACT_ADDRESS+'?a='+tokenIdNumber
+                }
+
+
+
+                console.log('learned', nameData)
+
+                recentNames.push(nameData)
+
+              }
+
+            });
+
+          Vue.set(namesList, 'list', recentNames)
 
 
     }

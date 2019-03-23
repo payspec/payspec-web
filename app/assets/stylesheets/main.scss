@@ -50,6 +50,12 @@ a
   opacity: 0.5;
 }
 
+.hero-footer
+{
+  background: linear-gradient(to top right, #4643ff 10%, #209cee);
+
+}
+
 .orange-gradient
 {
       background: radial-gradient(ellipse at bottom left, #e48951 60%, #ff7209 62%);
@@ -65,6 +71,13 @@ input
   color: #9d43ff !important;
 }
 
+.blue-links
+{
+  a
+  {
+    color: #209cee;
+  }
+}
 
 .pad-15
 {

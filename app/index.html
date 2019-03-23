@@ -29,9 +29,9 @@
 	    <div class="header-buttons pull-right">
 
 	      <span class="control ">
-      		<a class="button is-primary" href="/market">
+      		<a class="button is-info is-size-5" href="/market">
       		  <span class="icon">
-      		    <i class="fab fa-github"></i>
+      		    <i class="fab fa-ethereum"></i>
       		  </span>
       		  <span>Nametag Market</span>
       		</a>
@@ -165,12 +165,11 @@
 	  <div class="container" >
 	    <div class="content" id="nameslist" v-if="list.length > 0" v-cloak>
 	      <h4 class="title is-4">Recent Nametags</h4>
-	      <div class="main-text" >
+	      <div class="recent-tags-list blue-links" >
 
-      	 	<ul>
-      		  <li v-for="item in list"> {{item.name}}  </li>
+            <span class="tag is-size-4" v-for="item in list"> <a v-bind:href="item.tokenURL" target="_blank"> {{item.tokenName}} </a> </span>
 
-      		</ul>
+
 
       </div>
 	      <div class="columns is-multiline">
