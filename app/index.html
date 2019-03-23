@@ -26,12 +26,12 @@
         <div class="is-size-4 font-raleway" style="margin-left:2em;"> Your digital alias. </div>
       </div>
 
-	    <div class="header-buttons">
+	    <div class="header-buttons pull-right">
 
-	      <span class="control pull-right">
+	      <span class="control ">
       		<a class="button is-primary" href="/market">
       		  <span class="icon">
-      		    <i class="fa fa-github"></i>
+      		    <i class="fab fa-github"></i>
       		  </span>
       		  <span>Nametag Market</span>
       		</a>
@@ -76,7 +76,7 @@
 
                  <div v-if="nametagTokenAddress">
 
-                   NTT Contract: <a target='_blank' v-bind:href='nametagTokenURL'>{{nametagTokenAddress}}</a>
+                   <span class="tag is-size-6">NTT Contract </span> <br> <a target='_blank' v-bind:href='nametagTokenURL'>{{nametagTokenAddress}}</a>
                  </div>
 
                </div>
@@ -84,7 +84,7 @@
 
                  <div v-if="web3address">
 
-                   Connected Account: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
+                   <span class="tag is-size-6">Connected Account </span><br> <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
                  </div>
 
 
@@ -136,8 +136,8 @@
 
             <div class="pull-right">
               <a disabled class="button is-large" href="">
-                <span class="icon">
-                  <i class="fab fa-ethereum"></i>
+                <span class=" ">
+                  <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
                 <span> Submit </span>
               </a>
