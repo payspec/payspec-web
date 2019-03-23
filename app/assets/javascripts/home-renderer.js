@@ -360,8 +360,11 @@ export default class HomeRenderer {
 
                       var personalNames = []
 
+
+
+                      /// need to fix from block 
                       await web3.eth.filter({
-                        fromBlock: (currentEthBlock-30 * 1000),
+                        fromBlock: (currentEthBlock - (30 * 1000)),
                             toBlock: currentEthBlock,
                             address: _CONTRACT_ADDRESS,
                             topics: [_TRANSFER_TOPIC, null],
