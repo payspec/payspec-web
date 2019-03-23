@@ -159,16 +159,18 @@
     <!-- example content block -->
     <div class="content-block">
       <section class="hero">
+
 	<div class="hero-body">
-	  <div class="container">
-	    <div class="content">
+
+	  <div class="container" >
+	    <div class="content" id="nameslist" v-if="list.length > 0" v-cloak>
 	      <h4 class="title is-4">Recent Nametags</h4>
-	      <div class="main-text">
-	 	<ul>
-		  <li>Operating System x.x</li>
-		  <li>Programming Language x.x</li>
-		  <li>Module x.x</li>
-		</ul>
+	      <div class="main-text" >
+
+      	 	<ul>
+      		  <li v-for="item in list"> {{item.name}}  </li>
+
+      		</ul>
 
       </div>
 	      <div class="columns is-multiline">

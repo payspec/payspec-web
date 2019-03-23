@@ -18,11 +18,11 @@ var dashboardData;
 
 
 var nametagInput;
+var namesList;
 
 var jumbotron;
 var stats;
-var packetslist;
-var queuedtxlist;
+
 
 export default class HomeRenderer {
 
@@ -102,31 +102,20 @@ export default class HomeRenderer {
 
 
 
-
-
-
-         stats = new Vue({
-              el: '#stats',
-              data:{
-                relayData: {}
-               }
-            });
-
-            packetslist = new Vue({
-                 el: '#packetslist',
+            namesList = new Vue({
+                 el: '#nameslist',
                  data:{
                    list: []
                   }
                });
 
-           queuedtxlist = new Vue({
-                el: '#queuedtx',
-                data:{
-                  list: []
-                 }
-              });
 
 
+
+
+              self.updateNamesList()
+
+              setInterval(function(){ self.updateNamesList()   },8000)
 
     }
 
@@ -153,7 +142,12 @@ export default class HomeRenderer {
 
     async checkNameAvailability(name)
     {
+
+
+
       var web3 = ethereumHelper.getWeb3Instance();
+
+       if(!web3) return;
 
       var env = 'mainnet'
 
@@ -191,6 +185,63 @@ export default class HomeRenderer {
 
     }
 
+    async updateNamesList()
+    {
+
+
+      var web3 = ethereumHelper.getWeb3Instance();
+
+       if(!web3) return;
+
+
+
+
+      var env = 'mainnet'
+
+      var nametagContract = ContractInterface.getNametagContract(web3,env)
+      console.log('update names list', nametagContract)
+
+      /*nametagContract.Transfer({from:'0x0000000000000000000000000000000000000000000000000000000000000000'}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
+            if (error)
+              console.log('Error in myEvent event handler: ' + error);
+            else
+              console.log('myEvent: ' + JSON.stringify(eventResult.args));
+          });*/
+
+          var currentEthBlock = await ethereumHelper.getCurrentEthBlockNumber()
+
+      /*  var events = nametagContract.allEvents({fromBlock: (currentEthBlock-200) }, function(error, log){
+             if (error) {
+               console.error(error);
+               return
+             }
+               console.log(log);
+            });
+
+
+          web3.eth.filter({fromBlock: (currentEthBlock-200), address: nametagContract.address },function(e,r){
+
+            if (e) {
+              console.error(e);
+              return
+            }
+              console.log(r);
+          })*/
+
+          const _MINT_TOPIC = "0xcf6fbb9dcea7d07263ab4f5c3a92f53af33dffc421d9d121e1c74b307e68189d";
+          web3.eth.filter({
+            fromBlock: (currentEthBlock-3000),
+                toBlock: currentEthBlock,
+                address: '0xb6ed7644c69416d67b522e20bc294a9a9b405b31',
+                topics: [_MINT_TOPIC, null],
+          }, function(error,result)  {
+            console.log(error)
+             console.log("got filter results:", result, "transactions");
+
+           });
+
+
+    }
 
      update(renderData)
     {

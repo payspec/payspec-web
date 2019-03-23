@@ -121,6 +121,11 @@ export default class EthHelper {
      return this.web3;
    }
 
+   isConnected()
+   {
+     return  (typeof this.getWeb3Instance() != 'undefined')
+   }
+
    getConnectedAccountAddress()
    {
 
