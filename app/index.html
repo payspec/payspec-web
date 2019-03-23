@@ -55,7 +55,18 @@
 
       <div id="eth-container" class="eth-container box" v-cloak    >
 
+
+
+
         <div class="columns">
+
+          <div class="column" v-if="connected">
+            <div class="is-centered" >
+              <span class="tag is-size-6"> Connected: <i class="fab fa-ethereum has-text-success is-size-5" style="margin-left:1em;margin-right:0.5em"></i>  Mainnet</span>
+
+            </div>
+          </div>
+
                <div class="column">
 
                  <div v-if="!connected" >
@@ -64,6 +75,7 @@
 
 
                  <div v-if="nametagTokenAddress">
+
                    NTT Contract: <a target='_blank' v-bind:href='nametagTokenURL'>{{nametagTokenAddress}}</a>
                  </div>
 
@@ -71,6 +83,7 @@
                <div class="column">
 
                  <div v-if="web3address">
+
                    Connected Account: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
                  </div>
 
@@ -87,15 +100,55 @@
       </div>
 
 
+      <div class="columns">
+
+  	    <div class="content column is-6 is-offset-3">
 
 
-	    <div class="content">
-	      <h4 class="title is-4 is-spaced">Create a New Nametag</h4>
-	       <div class="main-text">
+          <div id="nametag-input" class="main-text box" v-cloak    >
 
-  	      </div>
 
-	    </div>
+          <div class="whitespace-md"></div>
+
+
+          <div class="columns">
+            <div class="column">
+               <h4 class=" is-size-4 is-4 is-spaced  " >Claim a Nametag</h4>
+            </div>
+            <div class="column">
+              <div class="pull-right">
+                <span class="tag is-success">Available</span>
+                <span class="tag is-danger">Not Available</span>
+              </div>
+            </div>
+          </div>
+
+
+
+           <div class="field">
+             <label class="label"> </label>
+             <div class="control">
+               <input class="input is-large   " type="text" placeholder=" " v-bind:text='inputName'>
+             </div>
+            </div>
+
+
+
+            <div class="pull-right">
+              <a disabled class="button is-large" href="">
+                <span class="icon">
+                  <i class="fab fa-ethereum"></i>
+                </span>
+                <span> Submit </span>
+              </a>
+            </div>
+
+
+    	      </div>
+
+  	    </div>
+      </div>
+
 	  </div>
 	</div>
       </section>

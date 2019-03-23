@@ -13,7 +13,7 @@ export default class HomeDashboard {
   {
     setInterval( function(){
          renderer.update();
-         packetRenderer.update()
+
     },5*1000);
 
 
@@ -22,7 +22,8 @@ export default class HomeDashboard {
     ethHelper = new EthHelper(   );
     ethHelper.init();
 
- 
+    renderer.init();
+
 
   }
 

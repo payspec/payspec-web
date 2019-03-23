@@ -12,8 +12,8 @@ var app;
 var dashboardData;
 
 
-var solutiontxlist;
-var transfertxlist;
+var nametagInput;
+
 var jumbotron;
 var stats;
 var packetslist;
@@ -21,19 +21,17 @@ var queuedtxlist;
 
 export default class HomeRenderer {
 
-    init( packetRenderer )
+    init(   )
     {
 
       var self = this;
 
-      this.transactionListData = {
-        txData: [ ]
-      }
 
 
-      var current_hostname = window.location.hostname;
 
-      var port = relayConfig.websocketsPort || 4000;
+    /*  var current_hostname = window.location.hostname;
+
+      var port =  4000;
 
       const socketServer = 'http://'+current_hostname+':'+port;
 
@@ -54,17 +52,6 @@ export default class HomeRenderer {
 
 
 
-      this.socket.on('relayData', function (data) {
-
-          console.log('relay data ', data )
-
-          Vue.set(stats, 'relayData',  data )
-
-
-          packetRenderer.updatePacketFeeStats( data )
-
-
-      });
 
       this.socket.on('lavaPackets', function (data) {
 
@@ -81,36 +68,20 @@ export default class HomeRenderer {
           Vue.set(queuedtxlist, 'list',  data )
 
       });
+*/
 
 
-
-      solutiontxlist = new Vue({
-          el: '#solutiontxlist',
+      nametagInput = new Vue({
+          el: '#nametag-input',
           data: {
-            //parentMessage: 'Parent',
-            transactions: {
-              tx_list: this.transactionListData.txData
-            }
+             inputName: '',
+
           }
         })
 
-       transfertxlist = new Vue({
-            el: '#transfertxlist',
-            data: {
-              //parentMessage: 'Parent',
-              transactions: {
-                tx_list: this.transactionListData.txData
-              }
-            }
-          })
 
 
-         jumbotron = new Vue({
-        el: '#jumbotron',
-        data:{
-          relayName: relayConfig.name
-         }
-      });
+
 
 
 
@@ -137,39 +108,15 @@ export default class HomeRenderer {
 
 
 
-
-
-      $('.mining-instructions-container').hide();
-
-      $('.toggle-mining-instructions').on('click',function(){
-          $('.mining-instructions-container').toggle();
-      });
-
-
-
-      console.log('Emit to websocket')
-  //     this.socket.emit('getRelayData');
-       this.socket.emit('getLavaPackets');
-        this.socket.emit('getQueuedTx');
     }
 
 
-    getFormattedStatus(receiptData)
-    {
-        if(receiptData.success) return 'success';
-      if(receiptData.mined) return 'mined';
-      if(receiptData.pending) return 'pending';
-      if(receiptData.queued) return 'queued';
-      return '?'
-    }
 
 
      update(renderData)
     {
 
-      this.socket.emit('getRelayData');
-      this.socket.emit('getLavaPackets');
-      this.socket.emit('getQueuedTx');
+
 
     }
 

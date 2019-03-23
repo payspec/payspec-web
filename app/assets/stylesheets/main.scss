@@ -14,7 +14,7 @@ html
 
 a
 {
-  color: #ff7209;
+  color: #9d43ff;
 }
 
 
@@ -58,6 +58,11 @@ a
 .navbar-dropdown
 {
   color: #4a4a4a !important;
+}
+
+input
+{
+  color: #9d43ff !important;
 }
 
 
@@ -356,6 +361,7 @@ position: relative;
 }
 
 
+
 .footer
 {
   color: black;
@@ -395,6 +401,10 @@ position: relative;
     tab-size: 4;
 }
 
+.is-centered
+{
+  text-align:center;
+}
 
 .code-box
 {

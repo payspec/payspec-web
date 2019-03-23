@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",
-    "dev": "webpack-dev-server ",
+ 
+    "dev": "webpack-dev-server",
     "express": "node express-dev.js"
   },
   "author": "admazzola",
@@ -40,6 +41,7 @@
     "html-webpack-include-assets-plugin": "^1.0.2",
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.7.2",
+    "nodemon": "^1.18.10",
     "sass-loader": "^6.0.6",
     "static-site-generator-webpack-plugin": "^3.4.1",
     "style-loader": "^0.20.1",
