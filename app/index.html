@@ -28,6 +28,15 @@
 
 	    <div class="header-buttons pull-right">
 
+        <span class="control ">
+          <a class="button is-info is-size-5" target="_blank" href="https://github.com/nametagtoken">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+            <span>Github</span>
+          </a>
+        </span>
+
 	      <span class="control ">
       		<a class="button is-info is-size-5" target="_blank" href="https://opensea.io/category/nametagtoken">
       		  <span class="icon">
@@ -162,8 +171,31 @@
 
 	<div class="hero-body">
 
-	  <div class="container" style="height:300px;" >
-	    <div class="content" id="nameslist" v-if="list.length > 0" v-cloak>
+
+    <div class="container" style="height:200px;" >
+      <div class="content" id="personalnameslist" v-if="list.length > 0" v-cloak>
+        <h4 class="title is-4">My Nametags</h4>
+        <div class="recent-tags-list blue-links" >
+
+            <span class="tag is-size-4" v-for="item in list"> <a v-bind:href="item.tokenURL" target="_blank"> {{item.tokenName}} </a> </span>
+
+
+      </div>
+        <div class="columns is-multiline">
+        <div class="column is-6">
+
+        </div>
+        <div class="column is-6">
+
+        </div>
+        </div>
+      </div>
+    </div>
+
+
+
+	  <div class="container" style="height:200px;" >
+	    <div class="content" id="recentnameslist" v-if="list.length > 0" v-cloak>
 	      <h4 class="title is-4">Recent Nametags</h4>
 	      <div class="recent-tags-list blue-links" >
 

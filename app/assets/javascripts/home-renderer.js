@@ -20,6 +20,9 @@ var dashboardData;
 var nametagInput;
 var namesList;
 
+var recentNamesList;
+var personalNamesList;
+
 var tokenIdQuery;
 var tokenNameQuery;
 var tokenOwnerQuery;
@@ -117,20 +120,28 @@ export default class HomeRenderer {
                   }
               })
 
-              namesList = new Vue({
-                   el: '#nameslist',
+              recentNamesList = new Vue({
+                   el: '#recentnameslist',
                    data:{
                      list: []
                     }
                  });
 
+               personalNamesList = new Vue({
+                    el: '#personalnameslist',
+                    data:{
+                      list: []
+                     }
+                  });
 
 
 
 
-                self.updateNamesList()
 
-                setInterval(function(){ self.updateNamesList()   },8000)
+                self.updateRecentNamesList()
+                self.updatePersonalNamesList()
+
+                setInterval(function(){ self.updateRecentNamesList()   },24 * 1000)
 
 
 
@@ -275,6 +286,24 @@ export default class HomeRenderer {
          })
        });
 
+
+       var containsOnlyLower =  await new Promise(function (result,error) {
+          nametagContract.containsOnlyLower.call(name, function(err,res){
+             if(err){ return error(err)}
+
+             result(res);
+          })
+        });
+
+        if(!containsOnlyLower)
+        {
+          Vue.set(nametagInput, 'nametagAvailable', false)
+          Vue.set(nametagInput, 'showAvailability', true)
+
+          return
+        }
+
+
        var tokenIdNumber =  new BigNumber(tokenIdRaw).toFixed();
 
         console.log(  tokenIdNumber  )
@@ -287,6 +316,8 @@ export default class HomeRenderer {
            })
          });
 
+
+
          var hasOwner = tokenOwnerAddress && tokenOwnerAddress != '0x'
            console.log(  hasOwner  )
 
@@ -297,11 +328,98 @@ export default class HomeRenderer {
 
     }
 
-    async updateNamesList()
+
+    async updatePersonalNamesList()
+    {
+      var web3 = ethereumHelper.getWeb3Instance();
+
+      var localMetamaskAddress = ethereumHelper.getConnectedAccountAddress();
+
+       if(!web3) return;
+
+       var env = 'mainnet'
+
+       var nametagContract = ContractInterface.getNametagContract(web3,env)
+       console.log('update names list', nametagContract)
+
+
+
+           var currentEthBlock = await ethereumHelper.getCurrentEthBlockNumber()
+
+
+
+            const _CONTRACT_ADDRESS = "0x3c642be0bb6cb9151652b999b26d80155bcea7de"
+            const _TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+
+
+
+              console.log('localMetamaskAddress',localMetamaskAddress)
+
+                  var localMetamaskAddressFixed =  new BigNumber(localMetamaskAddress).toFixed();
+
+
+                      var personalNames = []
+
+                      await web3.eth.filter({
+                        fromBlock: (currentEthBlock-30 * 1000),
+                            toBlock: currentEthBlock,
+                            address: _CONTRACT_ADDRESS,
+                            topics: [_TRANSFER_TOPIC, null],
+                      }, async function(error,result)  {
+
+                         var fromAddress = result.topics[1];
+                         var toAddress = result.topics[2];
+                         var tokenIdHex = result.topics[3];
+                         var tokenIdNumber =  new BigNumber(tokenIdHex).toFixed();
+
+
+                     //    var tokenName = await nametagContract.tokenURI.call( )
+
+                         var tokenName =  await new Promise(function (result,error) {
+                            nametagContract.tokenURI.call(tokenIdNumber, function(err,res){
+                               if(err){ return error(err)}
+
+                               result(res);
+                            })
+                          });
+
+                          var toAddressFixed =  new BigNumber(toAddress).toFixed();
+                          console.log('???', toAddressFixed, localMetamaskAddressFixed)
+
+                         if(toAddressFixed == localMetamaskAddressFixed)
+                         {
+                           var nameData = {
+                             to:  toAddress,
+                             tokenIdHex: tokenIdHex,
+                             tokenIdNumber: tokenIdNumber,
+                             tokenName: tokenName,
+                             tokenURL: 'https://etherscan.io/token/'+_CONTRACT_ADDRESS+'?a='+tokenIdNumber
+                           }
+
+
+
+                           console.log('learned', nameData)
+                           if(personalNames.length< 35)
+                           {
+                               personalNames.push(nameData)
+                           }
+
+
+                         }
+
+                       });
+
+                       Vue.set(personalNamesList, 'list', personalNames)
+
+    }
+
+    async updateRecentNamesList()
     {
 
 
       var web3 = ethereumHelper.getWeb3Instance();
+
+      var localMetamaskAddress = ethereumHelper.getConnectedAccountAddress();
 
        if(!web3) return;
 
@@ -322,35 +440,7 @@ export default class HomeRenderer {
 
           var currentEthBlock = await ethereumHelper.getCurrentEthBlockNumber()
 
-      /*  var events = nametagContract.allEvents({fromBlock: (currentEthBlock-200) }, function(error, log){
-             if (error) {
-               console.error(error);
-               return
-             }
-               console.log(log);
-            });
 
-
-          web3.eth.filter({fromBlock: (currentEthBlock-200), address: nametagContract.address },function(e,r){
-
-            if (e) {
-              console.error(e);
-              return
-            }
-              console.log(r);
-          })*/
-
-        /*  const _MINT_TOPIC = "0xcf6fbb9dcea7d07263ab4f5c3a92f53af33dffc421d9d121e1c74b307e68189d";
-          web3.eth.filter({
-            fromBlock: (currentEthBlock-3000),
-                toBlock: currentEthBlock,
-                address: '0xb6ed7644c69416d67b522e20bc294a9a9b405b31',
-                topics: [_MINT_TOPIC, null],
-          }, function(error,result)  {
-            console.log(error)
-             console.log("got filter results:", result, "transactions");
-
-           });*/
 
            const _CONTRACT_ADDRESS = "0x3c642be0bb6cb9151652b999b26d80155bcea7de"
            const _TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
@@ -405,7 +495,7 @@ export default class HomeRenderer {
 
             });
 
-          Vue.set(namesList, 'list', recentNames)
+      Vue.set(recentNamesList, 'list', recentNames)
 
 
     }
