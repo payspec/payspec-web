@@ -31,7 +31,6 @@ var navbar = new Vue({
 $(document).ready(function(){
 
       if($("#home").length > 0){
-      //  var web3 = ethHelper.init( alertRenderer);
 
         homeRenderer = new HomeRenderer();
 

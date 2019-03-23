@@ -116,9 +116,9 @@
                <h4 class=" is-size-4 is-4 is-spaced  " >Claim a Nametag</h4>
             </div>
             <div class="column">
-              <div class="pull-right">
-                <span class="tag is-success">Available</span>
-                <span class="tag is-danger">Not Available</span>
+              <div class="pull-right" v-if='showAvailability' v-cloak>
+                <span class="tag is-success" v-if='nametagAvailable'>Available</span>
+                <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
               </div>
             </div>
           </div>
@@ -128,19 +128,19 @@
            <div class="field">
              <label class="label"> </label>
              <div class="control">
-               <input class="input is-large   " type="text" placeholder=" " v-bind:text='inputName'>
+               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='inputName'>
              </div>
             </div>
 
 
 
             <div class="pull-right">
-              <a disabled class="button is-large" href="">
+              <div v-bind:disabled="!(showAvailability && nametagAvailable)" class="button is-large" v-on:click='onSubmit'>
                 <span class=" ">
                   <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
                 <span> Submit </span>
-              </a>
+              </div>
             </div>
 
 

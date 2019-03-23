@@ -16,17 +16,23 @@ module.exports = class ContractInterface  {
 
   static getTokenContract(web3,env)
   {
-    return new web3.eth.Contract(tokenContractJSON.abi,ContractInterface.getTokenContractAddress(env))
+
+  //  return new web3.eth.Contract(tokenContractJSON.abi,ContractInterface.getTokenContractAddress(env))
+
+    return   web3.eth.contract(tokenContractJSON.abi).at(ContractInterface.getTokenContractAddress(env))
+
   }
 
   static getLavaContract(web3,env)  //not a func ?s  Why not.
   {
-    return new web3.eth.Contract(lavaContractJSON.abi,ContractInterface.getLavaContractAddress(env))
+  //  return new web3.eth.Contract(lavaContractJSON.abi,ContractInterface.getLavaContractAddress(env))
+    return   web3.eth.contract(lavaContractJSON.abi).at(ContractInterface.getLavaContractAddress(env))
+
   }
 
   static getNametagContract(web3,env)  //not a func ?s  Why not.
   {
-    return new web3.eth.Contract(nametagContract.abi,ContractInterface.getNametagContractAddress(env))
+    return   web3.eth.contract(nametagContractJSON.abi).at(ContractInterface.getNametagContractAddress(env))
   }
 
 

@@ -22,7 +22,7 @@ export default class HomeDashboard {
     ethHelper = new EthHelper(   );
     ethHelper.init();
 
-    renderer.init();
+    renderer.init( ethHelper );
 
 
   }
