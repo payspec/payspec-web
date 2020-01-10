@@ -49,7 +49,8 @@ export default class HomeRenderer {
              description: '',
              refNumber: '',
              web3connected: false,
-             nametagAvailable: true
+             nametagAvailable: true,
+             predictedUUID: null
           },
           methods: {
                 keyUp: function (event) {
@@ -78,7 +79,9 @@ export default class HomeRenderer {
                   var computedInvoiceUUID = await self.getInvoiceUUID( newInvoiceData , ethereumHelper )
                   console.log('computedInvoiceUUID',computedInvoiceUUID)
 
-                  self.createNewInvoice( newInvoiceData )
+                  await self.createNewInvoice( newInvoiceData )
+
+                  Vue.set(createInvoiceInput, 'predictedUUID', computedInvoiceUUID)
                 }
             }
         })
@@ -230,7 +233,7 @@ export default class HomeRenderer {
          })
        });
 
-       var transactionId = response;
+       return response;
 
 
 
