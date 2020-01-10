@@ -162,7 +162,12 @@
               </div>
              </div>
 
-
+             <div class="field">
+               <label class="label"> Reference Number </label>
+               <div class="control">
+                 <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='refNumber'>
+               </div>
+              </div>
 
             <div class="pull-right">
               <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
@@ -172,6 +177,14 @@
                 <span> Submit </span>
               </div>
             </div>
+
+
+            <div class="field" v-if='predictedUUID'>
+              <label class="label"> Output: Invoice UUID </label>
+              <div class="control">
+                <span class="tag is-success" >{{predictedUUID}}</span>
+              </div>
+             </div>
 
 
     	      </div>
