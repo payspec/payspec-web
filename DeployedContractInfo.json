@@ -4,22 +4,19 @@
       "mainnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0xd89c37fd7c0fa3b107b7e4a8731dd3aaec488954"},
-                "nametagtoken": {"name":"NametagToken", "blockchain_address":"0x3c642be0bb6cb9151652b999b26d80155bcea7de"}
+                 "payspec": {"name":"PaySpec", "blockchain_address":"0x0"}
               }
             },
       "staging": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x5b545603eea150f92f7c764272adfbedbfea8cdf"},
-                "nametagtoken": {"name":"NametagToken", "blockchain_address":"0x5743a94ccebd16f912da5995fcb32462bfb77f26"}
+                 "payspec": {"name":"PaySpec", "blockchain_address":"0x0"}
               }
             },
       "testnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x5b545603eea150f92f7c764272adfbedbfea8cdf"},
-                "nametagtoken": {"name":"NametagToken", "blockchain_address":"0x5743a94ccebd16f912da5995fcb32462bfb77f26"}
+                "payspec": {"name":"PaySpec", "blockchain_address":"0x19eea62ff36d7c3c3f601c022bbaa18d62c5e9a3"}
               }
             }
     }

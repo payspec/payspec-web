@@ -7,9 +7,9 @@ const $ = require('jquery');
 var web3utils = require('web3-utils')
 
 
-
-var lavaContract = require('../contracts/LavaToken.json')
-var nametagContract = require('../contracts/NametagToken.json')
+var paySpecContract = require('../contracts/PaySpec.json')
+//var lavaContract = require('../contracts/LavaToken.json')
+//var nametagContract = require('../contracts/NametagToken.json')
 var _0xBitcoinContract = require('../contracts/_0xBitcoinToken.json')
 var erc20TokenContract = require('../contracts/ERC20Interface.json')
 
@@ -64,10 +64,8 @@ export default class EthHelper {
               connected: false,
               web3address:null,
               etherscanURL:null,
-              lavaTokenAddress: null,
-              lavaTokenURL:null,
-              nametagTokenAddress: null,
-              nametagTokenURL:null
+              paySpecAddress: null,
+              paySpecEtherscanURL:null,
 
             }
       });
@@ -183,12 +181,11 @@ export default class EthHelper {
      this.web3 = web3;
      var env = 'mainnet';
 
-     var lavaAddress = ContractInterface.getLavaContractAddress( env );
-     var nametagAddress = ContractInterface.getNametagContractAddress( env );
+     var paySpecAddress = ContractInterface.getPaySpecAddress( env );
 
 
-     await Vue.set(ethContainer, "nametagTokenAddress" , nametagAddress);
-     await Vue.set(ethContainer, "nametagTokenURL" , 'https://etherscan.io/address/'+nametagAddress);
+     await Vue.set(ethContainer, "paySpecAddress" , paySpecAddress);
+     await Vue.set(ethContainer, "paySpecContractURL" , 'https://etherscan.io/address/'+paySpecAddress);
 
 
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
@@ -231,12 +228,7 @@ export default class EthHelper {
     var instance = this.getWeb3ContractInstance( tokenAddress, tokenContractABI  )
 
     return instance;
-    /*
-    var contract =  ethHelper.getWeb3ContractInstance(
-      this.web3,
-      this.lavaWalletContract.blockchain_address,
-      lavaContractABI.abi
-    ); */
+
 
 
   }
@@ -247,9 +239,9 @@ export default class EthHelper {
         case 'masterToken':
             return _0xBitcoinContract.abi;
           break;
-        case 'lavaToken':
-            return  lavaContract.abi;
-          break;
+        //case 'lavaToken':
+          //  return  lavaContract.abi;
+          //break;
         default:
           return;
           // code block

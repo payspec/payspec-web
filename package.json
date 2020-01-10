@@ -1,7 +1,7 @@
 {
-  "name": "0xbitcointokenweb",
+  "name": "SendERC_Payspec",
   "version": "0.1.2",
-  "description": "Official website for 0xbitcoin",
+  "description": "Free Open-Source invoicing system for ERC20 tokens ",
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",
