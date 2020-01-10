@@ -150,7 +150,7 @@ export default class EthHelper {
        return;
      }
 
-     return this.getWeb3Instance().eth.accounts[0];
+     return web3utils.toChecksumAddress( this.getWeb3Instance().eth.accounts[0] );
    }
 
    getEnvironmentName()

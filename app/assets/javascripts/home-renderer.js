@@ -6,12 +6,13 @@ import Vue from 'vue';
 
 //const relayConfig = require('../../../relay.config').config
 //var io = require('socket.io-client');
-var web3Utils = require('web3-utils')
+
 var BigNumber = require('bignumber.js')
 var ethereumHelper;
-
+var web3utils = require('web3-utils')
 
 const ContractInterface = require('./contract-interface')
+
 
 var app;
 var dashboardData;
@@ -59,7 +60,7 @@ export default class HomeRenderer {
 
                 //  self.checkNameAvailability( this.inputName );
                 },
-                onSubmitNewInvoice: function (event){
+                onSubmitNewInvoice: async function (event){
                   console.log('submit new invoice ', this.recipientAddress)
                   //self.claimName( this.inputName )
 
@@ -72,6 +73,10 @@ export default class HomeRenderer {
                     refNumber:this.refNumber,
                     blockExpiresAt:0
                   }
+
+
+                  var computedInvoiceUUID = await self.getInvoiceUUID( newInvoiceData , ethereumHelper )
+                  console.log('computedInvoiceUUID',computedInvoiceUUID)
 
                   self.createNewInvoice( newInvoiceData )
                 }
@@ -180,10 +185,23 @@ export default class HomeRenderer {
 
 
     }
+
+    async getInvoiceUUID( newInvoiceData, ethHelper )
+    {
+       console.log('sha 3 inputs ', ethHelper.getConnectedAccountAddress(), newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress)
+
+      var digest = web3utils.soliditySha3({t: 'address', v: ethHelper.getConnectedAccountAddress()}, {t: 'uint256', v: newInvoiceData.refNumber }, {t: 'string', v: newInvoiceData.description }, {t: 'address', v: newInvoiceData.tokenAddress }, {t: 'uint256', v: newInvoiceData.tokenAmount }, {t: 'address', v: newInvoiceData.recipientAddress });
+
+      var digestBytes32 = web3utils.hexToBytes(digest)
+      console.log('digestBytes32',digestBytes32)
+
+      return digest;
+    }
+
     async createNewInvoice(  newInvoiceData )
     {
 
-      console.log('create new invoice ', newInvoiceData.description,newInvoiceData.refNumber,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt)
+      console.log('create new invoice ', newInvoiceData.refNumber, newInvoiceData.description,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt)
 
 
       var web3 = ethereumHelper.getWeb3Instance();
