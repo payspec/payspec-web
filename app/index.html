@@ -71,7 +71,7 @@
 
           <div class="column" v-if="connected">
             <div class="is-centered" >
-              <span class="tag is-size-6"> Connected: <i class="fab fa-ethereum has-text-success is-size-5" style="margin-left:1em;margin-right:0.5em"></i>  Mainnet</span>
+              <span class="tag is-size-6"> Connected: <i class="fab fa-ethereum has-text-success is-size-5" style="margin-left:1em;margin-right:0.5em"></i>  {{networkMode}}  </span>
 
             </div>
           </div>
@@ -83,9 +83,9 @@
                  </div>
 
 
-                 <div v-if="nametagTokenAddress">
+                 <div v-if="paySpecAddress">
 
-                   <span class="tag is-size-6">NTT Contract </span> <br> <a target='_blank' v-bind:href='nametagTokenURL'>{{nametagTokenAddress}}</a>
+                   <span class="tag is-size-6">PaySpec Contract </span> <br> <a target='_blank' v-bind:href='paySpecEtherscanURL'>{{paySpecAddress}}</a>
                  </div>
 
                </div>
@@ -122,7 +122,7 @@
 
           <div class="columns">
             <div class="column">
-               <h4 class=" is-size-4 is-4 is-spaced  " >Claim a Nametag</h4>
+               <h4 class=" is-size-4 is-4 is-spaced  " >Create an Invoice</h4>
             </div>
             <div class="column">
               <div class="pull-right" v-if='showAvailability' v-cloak>
@@ -215,191 +215,12 @@
 	  </div>
 
 
-   <div class="container" >
 
 
 
 
-     <div class="columns">
-
-      <div class="content column is-6 is-offset-3">
-
-
-         <div id="tokenIdQuery" class="main-text box" v-cloak    >
-
-
-         <div class="whitespace-md"></div>
-
-
-         <div class="columns">
-           <div class="column">
-              <h4 class=" is-size-4 is-4 is-spaced  " >Name to Token ID</h4>
-           </div>
-           <div class="column">
-
-           </div>
-         </div>
-
-          <div class="field">
-            <label class="label"> </label>
-            <div class="control">
-              <input class="input is-large" type="text" placeholder="Token Name"   v-model='queryName'>
-            </div>
-           </div>
-
-           <div class="columns">
-             <div class="column">
-               <div>
-                 {{tokenIdResult}}
-               </div>
-             </div>
-
-           </div>
-
-
-           <div class="columns">
-             <div class="column">
-
-             </div>
-             <div class="column">
-               <div class="pull-right">
-                 <div v-bind:disabled=" !(queryName.length > 0)" class="button is-large" v-on:click='onSubmit'>
-                   <span class=" ">
-                     <i class="fab fa-ethereum" style="margin-right:1em"></i>
-                   </span>
-                   <span> Query </span>
-                 </div>
-               </div>
-             </div>
-           </div>
-
-
-
-          </div>
-
-      </div>
-     </div>
-
-
-
-     <div class="whitespace-sm"></div>
-
-
-     <div class="columns">
-
-      <div class="content column is-6 is-offset-3">
-
-
-         <div id="tokenOwnerQuery" class="main-text box" v-cloak    >
-
-
-         <div class="whitespace-md"></div>
-
-
-         <div class="columns">
-           <div class="column">
-              <h4 class=" is-size-4 is-4 is-spaced  " >Get Nametag Owner</h4>
-           </div>
-           <div class="column">
-
-           </div>
-         </div>
-
-          <div class="field">
-            <label class="label"> </label>
-            <div class="control">
-              <input class="input is-large" type="text" placeholder="Token Name"   v-model='queryName'>
-            </div>
-           </div>
-
-           <div class="columns">
-             <div class="column">
-               <div>
-                <a v-bind:href='ownerURL' target="blank"> {{ownerResult}} </a>
-               </div>
-             </div>
-             <div class="column">
-               <div class="pull-right">
-                 <div v-bind:disabled=" !(queryName.length > 0)" class="button is-large" v-on:click='onSubmit'>
-                   <span class=" ">
-                     <i class="fab fa-ethereum" style="margin-right:1em"></i>
-                   </span>
-                   <span> Query </span>
-                 </div>
-               </div>
-             </div>
-           </div>
-
-
-
-          </div>
-
-      </div>
-     </div>
-
-
-     <div class="whitespace-sm"></div>
-
-
-     <div class="columns">
-
-      <div class="content column is-6 is-offset-3">
-
-
-         <div id="tokenNameQuery" class="main-text box" v-cloak    >
-
-
-         <div class="whitespace-md"></div>
-
-
-         <div class="columns">
-           <div class="column">
-              <h4 class=" is-size-4 is-4 is-spaced  " >Token ID To Name</h4>
-           </div>
-           <div class="column">
-
-           </div>
-         </div>
-
-          <div class="field">
-            <label class="label"> </label>
-            <div class="control">
-              <input class="input is-large" type="text" placeholder="Token ID"   v-model='queryId'>
-            </div>
-           </div>
-
-           <div class="columns">
-             <div class="column">
-               <div>
-                 {{tokenNameResult}}
-               </div>
-             </div>
-             <div class="column">
-               <div class="pull-right">
-                 <div v-bind:disabled=" !(queryId.length > 0)" class="button is-large" v-on:click='onSubmit'>
-                   <span class=" ">
-                     <i class="fab fa-ethereum" style="margin-right:1em"></i>
-                   </span>
-                   <span> Query </span>
-                 </div>
-               </div>
-             </div>
-           </div>
-
-
-
-          </div>
-
-      </div>
-     </div>
-
-
-   </div>
-
-
-
-
-	</div>
+	</div><!-- hero body -->
+  
       </section>
       <hr/>
     </div>

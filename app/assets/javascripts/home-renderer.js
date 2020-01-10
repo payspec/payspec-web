@@ -138,16 +138,38 @@ export default class HomeRenderer {
 
 
 
-                self.updateRecentNamesList()
-                self.updatePersonalNamesList()
+                //self.updateRecentNamesList()
+                //self.updatePersonalNamesList()
 
-                setInterval(function(){ self.updateRecentNamesList()   },24 * 1000)
+                //setInterval(function(){ self.updateRecentNamesList()   },24 * 1000)
 
 
 
 
     }
+    async createNewInvoice( )
+    {
+      var web3 = ethereumHelper.getWeb3Instance();
 
+      var env = 'mainnet'
+
+      var connectedAddress = ethereumHelper.getConnectedAccountAddress()
+
+      var nametagContract = ContractInterface.getNametagContract(web3,env)
+
+      var response =  await new Promise(function (result,error) {
+         nametagContract.claimToken.sendTransaction(connectedAddress,name, function(err,res){
+            if(err){ return error(err)}
+
+            result(res);
+         })
+       });
+
+
+    }
+
+
+/*
 
     async claimName(name)
     {
@@ -362,7 +384,7 @@ export default class HomeRenderer {
 
 
 
-                      /// need to fix from block 
+                      /// need to fix from block
                       await web3.eth.filter({
                         fromBlock: (currentEthBlock - (30 * 1000)),
                             toBlock: currentEthBlock,
@@ -416,6 +438,10 @@ export default class HomeRenderer {
 
     }
 
+
+
+
+
     async updateRecentNamesList()
     {
 
@@ -434,12 +460,6 @@ export default class HomeRenderer {
       var nametagContract = ContractInterface.getNametagContract(web3,env)
       console.log('update names list', nametagContract)
 
-      /*nametagContract.Transfer({from:'0x0000000000000000000000000000000000000000000000000000000000000000'}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
-            if (error)
-              console.log('Error in myEvent event handler: ' + error);
-            else
-              console.log('myEvent: ' + JSON.stringify(eventResult.args));
-          });*/
 
           var currentEthBlock = await ethereumHelper.getCurrentEthBlockNumber()
 
@@ -502,6 +522,10 @@ export default class HomeRenderer {
 
 
     }
+
+
+    */
+    
 
      update(renderData)
     {

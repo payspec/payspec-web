@@ -62,10 +62,11 @@ export default class EthHelper {
       data: {
               errorMessage:null,
               connected: false,
+              networkMode: 'Mainnet',
               web3address:null,
               etherscanURL:null,
               paySpecAddress: null,
-              paySpecEtherscanURL:null,
+              paySpecEtherscanURL:null
 
             }
       });
@@ -185,8 +186,9 @@ export default class EthHelper {
 
 
      await Vue.set(ethContainer, "paySpecAddress" , paySpecAddress);
-     await Vue.set(ethContainer, "paySpecContractURL" , 'https://etherscan.io/address/'+paySpecAddress);
+     await Vue.set(ethContainer, "paySpecEtherscanURL" , 'https://etherscan.io/address/'+paySpecAddress);
 
+     console.log('meep1')
 
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
      await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0] + '#tokentxns');
