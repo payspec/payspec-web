@@ -63,6 +63,7 @@ export default class EthHelper {
               errorMessage:null,
               connected: false,
               networkMode: 'Mainnet',
+              chainId: 0,
               web3address:null,
               etherscanURL:null,
               paySpecAddress: null,
@@ -97,6 +98,8 @@ export default class EthHelper {
                 // Request account access if needed
                 await ethereum.enable();
                 // Acccounts now exposed
+
+                console.log('meep', window.web3.currentProvider.chainId)
 
                 await Vue.set(ethContainer, "connected" , true);
                 await self.updateEthAccountInfo(web3)
@@ -150,6 +153,19 @@ export default class EthHelper {
      return this.getWeb3Instance().eth.accounts[0];
    }
 
+   getEnvironmentName()
+   {
+
+    // return ethContainer.networkMode;
+
+    if(ethContainer.chainId == '0x3')
+    {
+      return 'development'
+    }
+
+    return 'production'
+   }
+
    async getCurrentEthBlockNumber()
    {
 
@@ -180,18 +196,37 @@ export default class EthHelper {
      this.clearError();
 
      this.web3 = web3;
+
+
+     var chainId = web3.currentProvider.chainId;
+
+     await Vue.set(ethContainer, "chainId" , chainId);
+
+
      var env = 'mainnet';
+     if(chainId == '0x3')
+     {
+        env = 'development';
+
+
+        await Vue.set(ethContainer, "networkMode" , 'Ropsten');
+     }
+
+      console.log('Eth Env:',env)
+
+
+
 
      var paySpecAddress = ContractInterface.getPaySpecAddress( env );
+     var etherscanAddress = ContractInterface.getEtherscanBaseURL( env );
 
 
      await Vue.set(ethContainer, "paySpecAddress" , paySpecAddress);
-     await Vue.set(ethContainer, "paySpecEtherscanURL" , 'https://etherscan.io/address/'+paySpecAddress);
+     await Vue.set(ethContainer, "paySpecEtherscanURL" , etherscanAddress+'/address/'+paySpecAddress);
 
-     console.log('meep1')
 
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
-     await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0] + '#tokentxns');
+     await Vue.set(ethContainer, "etherscanURL" , etherscanAddress+'/address/'+web3.eth.accounts[0] + '#tokentxns');
 
 
 

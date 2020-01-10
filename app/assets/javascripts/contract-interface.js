@@ -28,7 +28,7 @@ module.exports = class ContractInterface  {
   static getPaySpecContract(web3,env)  //not a func ?s  Why not.
     {
     //  return new web3.eth.Contract(lavaContractJSON.abi,ContractInterface.getLavaContractAddress(env))
-      return   web3.eth.contract(paySpec.abi).at(ContractInterface.getPaySpecAddress(env))
+      return   web3.eth.contract(paySpecJSON.abi).at(ContractInterface.getPaySpecAddress(env))
 
     }
 
@@ -69,6 +69,19 @@ module.exports = class ContractInterface  {
       return deployedContractInfo.networks.staging.contracts.payspec.blockchain_address;
     }else{
       return deployedContractInfo.networks.mainnet.contracts.payspec.blockchain_address;
+    }
+
+  }
+
+  static getEtherscanBaseURL(env)
+  {
+    if(env == 'development')
+    {
+      return 'https://ropsten.etherscan.io';
+    }else if(env == 'staging'){
+      return 'https://etherscan.io';
+    }else{
+      return 'https://etherscan.io';
     }
 
   }

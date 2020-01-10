@@ -29,7 +29,7 @@
 	    <div class="header-buttons pull-right">
 
         <span class="control ">
-          <a class="button is-info is-size-5" target="_blank" href="https://github.com/nametagtoken">
+          <a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
             <span class="icon">
               <i class="fab fa-github"></i>
             </span>
@@ -38,7 +38,7 @@
         </span>
 
 	      <span class="control ">
-      		<a class="button is-info is-size-5" target="_blank" href="https://opensea.io/category/nametagtoken">
+      		<a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
       		  <span class="icon">
       		    <i class="fab fa-ethereum"></i>
       		  </span>
@@ -114,7 +114,7 @@
   	    <div class="content column is-6 is-offset-3">
 
 
-          <div id="nametag-input" class="main-text box" v-cloak    >
+          <div id="create-invoice-input" class="main-text box" v-cloak    >
 
 
           <div class="whitespace-md"></div>
@@ -122,29 +122,50 @@
 
           <div class="columns">
             <div class="column">
-               <h4 class=" is-size-4 is-4 is-spaced  " >Create an Invoice</h4>
+               <h4 class=" is-size-4 is-4 is-spaced">Create an Invoice</h4>
             </div>
-            <div class="column">
+            <!-- <div class="column">
               <div class="pull-right" v-if='showAvailability' v-cloak>
                 <span class="tag is-success" v-if='nametagAvailable'>Available</span>
                 <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
               </div>
-            </div>
+            </div> -->
           </div>
 
 
+          <div class="field">
+            <label class="label"> Recipient Address </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='recipientAddress'>
+            </div>
+           </div>
+
+          <div class="field">
+            <label class="label"> Token Address </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAddress'>
+            </div>
+           </div>
+
 
            <div class="field">
-             <label class="label"> </label>
+             <label class="label"> Tokens Amount Due </label>
              <div class="control">
-               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='inputName'>
+               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAmount'>
              </div>
             </div>
+
+            <div class="field">
+              <label class="label"> Description Note </label>
+              <div class="control">
+                <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='description'>
+              </div>
+             </div>
 
 
 
             <div class="pull-right">
-              <div v-bind:disabled="!(showAvailability && nametagAvailable)" class="button is-large" v-on:click='onSubmit'>
+              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
                 <span class=" ">
                   <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
@@ -156,7 +177,66 @@
     	      </div>
 
   	    </div>
+
+
+
       </div>
+
+
+
+
+      <div class="columns">
+
+        <div class="content column is-6 is-offset-3">
+
+
+          <div id="pay-invoice-input" class="main-text box" v-cloak    >
+
+
+          <div class="whitespace-md"></div>
+
+
+          <div class="columns">
+            <div class="column">
+               <h4 class=" is-size-4 is-4 is-spaced">Pay Invoice</h4>
+            </div>
+            <!-- <div class="column">
+              <div class="pull-right" v-if='showAvailability' v-cloak>
+                <span class="tag is-success" v-if='nametagAvailable'>Available</span>
+                <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
+              </div>
+            </div> -->
+          </div>
+
+
+          <div class="field">
+            <label class="label"> Invoice ID </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='invoiceUUID'>
+            </div>
+           </div>
+
+
+
+            <div class="pull-right">
+              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
+                <span class=" ">
+                  <i class="fab fa-ethereum" style="margin-right:1em"></i>
+                </span>
+                <span> Submit </span>
+              </div>
+            </div>
+
+
+            </div>
+
+        </div>
+
+
+      </div>
+
+
+
 
 	  </div>
 	</div>
@@ -172,7 +252,7 @@
 	<div class="hero-body">
 
 
-    <div class="container" style="height:200px;" >
+  <!--  <div class="container" style="height:200px;" >
       <div class="content" id="personalnameslist" v-if="list.length > 0" v-cloak>
         <h4 class="title is-4">My Nametags</h4>
         <div class="recent-tags-list blue-links" >
@@ -190,11 +270,11 @@
         </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
 
 
-	  <div class="container" style="height:200px;" >
+	 <!-- <div class="container" style="height:200px;" >
 	    <div class="content" id="recentnameslist" v-if="list.length > 0" v-cloak>
 	      <h4 class="title is-4">Recent Nametags</h4>
 	      <div class="recent-tags-list blue-links" >
@@ -212,7 +292,7 @@
     		</div>
 	      </div>
 	    </div>
-	  </div>
+	  </div>-->
 
 
 
@@ -220,7 +300,7 @@
 
 
 	</div><!-- hero body -->
-  
+
       </section>
       <hr/>
     </div>

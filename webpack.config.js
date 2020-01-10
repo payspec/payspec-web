@@ -48,7 +48,7 @@ var webpackPlugins = [
 
 const routesData = {
   routes: [
-    {url: '/', title: 'Lava Token', template: 'app/index.html', filename: 'index.html'} 
+    {url: '/', title: 'SendERC - Token Payment System', template: 'app/index.html', filename: 'index.html'} 
 
   //  {url: '/wallet', title: 'Wallet', template: 'app/wallet.html', filename: 'wallet/index.html'},
   ]

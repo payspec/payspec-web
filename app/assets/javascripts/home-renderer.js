@@ -17,11 +17,9 @@ var app;
 var dashboardData;
 
 
-var nametagInput;
-var namesList;
+var createInvoiceInput;
+var payInvoiceInput;
 
-var recentNamesList;
-var personalNamesList;
 
 var tokenIdQuery;
 var tokenNameQuery;
@@ -41,41 +39,87 @@ export default class HomeRenderer {
 
 
 
-
-
-
-      nametagInput = new Vue({
-          el: '#nametag-input',
+      createInvoiceInput = new Vue({
+          el: '#create-invoice-input',
           data: {
-             inputName: '',
-             showAvailability: false,
+             recipientAddress: '',
+             tokenAddress: '',
+             tokenAmount: '',
+             description: '',
+             web3connected: false,
              nametagAvailable: true
           },
           methods: {
                 keyUp: function (event) {
-                   Vue.set(nametagInput, 'showAvailability', false)
+                   //Vue.set(createInvoiceInput, 'showAvailability', false)
                 },
                 inputChange: function (event) {
                   console.log('input change',  this.inputName, event)
 
-                  self.checkNameAvailability( this.inputName );
+                //  self.checkNameAvailability( this.inputName );
                 },
-                onSubmit: function (event){
+                onSubmitNewInvoice: function (event){
+                  console.log('submit new invoice ', this.recipientAddress)
+                  //self.claimName( this.inputName )
 
-                  self.claimName( this.inputName )
+
+                  var newInvoiceData = {
+                    recipientAddress: this.recipientAddress,
+                    tokenAddress:this.tokenAddress,
+                    tokenAmount:this.tokenAmount,
+                    description:this.description,
+                    nonce:0,
+                    blockExpiresAt:0
+                  }
+
+                  self.createNewInvoice( newInvoiceData )
                 }
             }
         })
+
+
+        payInvoiceInput = new Vue({
+            el: '#pay-invoice-input',
+            data: {
+               invoiceUUID: '',
+
+               web3connected: false
+            },
+            methods: {
+                  keyUp: function (event) {
+                     //Vue.set(createInvoiceInput, 'showAvailability', false)
+                  },
+                  inputChange: function (event) {
+                    console.log('input change',  this.inputName, event)
+
+                  //  self.checkNameAvailability( this.inputName );
+                  },
+                  onSubmitNewInvoice: function (event){
+                    console.log('pay invoice ', this.invoiceUUID)
+                    //self.claimName( this.inputName )
+
+
+
+                    self.payInvoice( this.invoiceUUID )
+                  }
+              }
+          })
+
+
 
 
 
 
     }
 
-    async onWeb3Connected()
+    async onWeb3Connected() //from eth helper callback
     {
       var self = this;
         console.log('on web3 connected')
+
+        Vue.set(createInvoiceInput, 'web3connected', true)
+        Vue.set(payInvoiceInput, 'web3connected', true)
+
 
 
         tokenIdQuery = new Vue({
@@ -120,19 +164,7 @@ export default class HomeRenderer {
                   }
               })
 
-              recentNamesList = new Vue({
-                   el: '#recentnameslist',
-                   data:{
-                     list: []
-                    }
-                 });
 
-               personalNamesList = new Vue({
-                    el: '#personalnameslist',
-                    data:{
-                      list: []
-                     }
-                  });
 
 
 
@@ -147,18 +179,31 @@ export default class HomeRenderer {
 
 
     }
-    async createNewInvoice( )
+    async createNewInvoice(  newInvoiceData )
     {
+
+      console.log('create new invoice ', newInvoiceData.description,newInvoiceData.nonce,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt)
+
+
       var web3 = ethereumHelper.getWeb3Instance();
 
-      var env = 'mainnet'
+      var env = ethereumHelper.getEnvironmentName()
+
+      console.log('env ',env)
 
       var connectedAddress = ethereumHelper.getConnectedAccountAddress()
 
-      var nametagContract = ContractInterface.getNametagContract(web3,env)
+      var paySpecContract = ContractInterface.getPaySpecContract(web3,env)
+
+
+      //web3.eth.defaultAccount = web3.eth.accounts[0]
+       //personal.unlockAccount(web3.eth.defaultAccount)
+
+
+      // await web3.eth.enable();
 
       var response =  await new Promise(function (result,error) {
-         nametagContract.claimToken.sendTransaction(connectedAddress,name, function(err,res){
+         paySpecContract.createInvoice.sendTransaction(newInvoiceData.description,newInvoiceData.nonce,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt, function(err,res){
             if(err){ return error(err)}
 
             result(res);
@@ -167,6 +212,42 @@ export default class HomeRenderer {
 
 
     }
+
+    async payInvoice(  invoiceUUID )
+    {
+
+      console.log('pay invoice ', invoiceUUID)
+
+
+      var web3 = ethereumHelper.getWeb3Instance();
+
+      var env = ethereumHelper.getEnvironmentName()
+
+      console.log('env ',env)
+
+      var connectedAddress = ethereumHelper.getConnectedAccountAddress()
+
+      var paySpecContract = ContractInterface.getPaySpecContract(web3,env)
+
+
+      //web3.eth.defaultAccount = web3.eth.accounts[0]
+       //personal.unlockAccount(web3.eth.defaultAccount)
+
+
+      // await web3.eth.enable();
+
+      var response =  await new Promise(function (result,error) {
+         paySpecContract.payInvoice.sendTransaction(invoiceUUID, function(err,res){
+            if(err){ return error(err)}
+
+            result(res);
+         })
+       });
+
+
+    }
+
+
 
 
 /*
@@ -525,7 +606,7 @@ export default class HomeRenderer {
 
 
     */
-    
+
 
      update(renderData)
     {
