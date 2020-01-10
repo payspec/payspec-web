@@ -46,6 +46,7 @@ export default class HomeRenderer {
              tokenAddress: '',
              tokenAmount: '',
              description: '',
+             refNumber: '',
              web3connected: false,
              nametagAvailable: true
           },
@@ -68,7 +69,7 @@ export default class HomeRenderer {
                     tokenAddress:this.tokenAddress,
                     tokenAmount:this.tokenAmount,
                     description:this.description,
-                    nonce:0,
+                    refNumber:this.refNumber,
                     blockExpiresAt:0
                   }
 
@@ -182,7 +183,7 @@ export default class HomeRenderer {
     async createNewInvoice(  newInvoiceData )
     {
 
-      console.log('create new invoice ', newInvoiceData.description,newInvoiceData.nonce,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt)
+      console.log('create new invoice ', newInvoiceData.description,newInvoiceData.refNumber,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt)
 
 
       var web3 = ethereumHelper.getWeb3Instance();
@@ -203,12 +204,16 @@ export default class HomeRenderer {
       // await web3.eth.enable();
 
       var response =  await new Promise(function (result,error) {
-         paySpecContract.createInvoice.sendTransaction(newInvoiceData.description,newInvoiceData.nonce,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt, function(err,res){
+         paySpecContract.createInvoice.sendTransaction(newInvoiceData.refNumber,newInvoiceData.description,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt, function(err,res){
             if(err){ return error(err)}
 
+            //console.log('res ', res)
             result(res);
          })
        });
+
+       var transactionId = response;
+
 
 
     }
