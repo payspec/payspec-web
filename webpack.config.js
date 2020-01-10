@@ -48,7 +48,8 @@ var webpackPlugins = [
 
 const routesData = {
   routes: [
-    {url: '/', title: 'SendERC - Token Payment System', template: 'app/index.html', filename: 'index.html'} 
+    {url: '/', title: 'SendERC - Token Payment System', template: 'app/index.html', filename: 'index.html'},
+    {url: '/', title: 'SendERC - Invoice', template: 'app/invoice.html', filename: 'invoice.html'}
 
   //  {url: '/wallet', title: 'Wallet', template: 'app/wallet.html', filename: 'wallet/index.html'},
   ]

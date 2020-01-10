@@ -6,7 +6,7 @@ import EthHelper from './eth-helper'
 
 var ethHelper;
 
-export default class HomeDashboard {
+export default class GenericDashboard {
 
 
   init(renderer)

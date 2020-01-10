@@ -25,6 +25,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "html-loader": "^0.5.5",
     "jquery": "^3.3.1",
+    "qrcode": "^1.4.4",
     "socket.io-client": "^2.2.0",
     "vue": "^2.5.13",
     "web3": "^0.14.0",

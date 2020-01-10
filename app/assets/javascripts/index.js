@@ -9,14 +9,18 @@ import Vue from 'vue'
 import AlertRenderer from './alert-renderer'
 
 import HomeRenderer from './home-renderer'
+import GenericDashboard from './generic-dashboard'
 
-import HomeDashboard from './home-dashboard'
+import InvoiceRenderer from './invoice-renderer'
 
+
+var genericDashboard = new GenericDashboard();
 
 
 var alertRenderer = new AlertRenderer();
 var homeRenderer;
-var homeDashboard = new HomeDashboard();
+var invoiceRenderer;
+//var invoiceDashboard = new InvoiceDashboard();
 
 
 var navbar = new Vue({
@@ -34,7 +38,16 @@ $(document).ready(function(){
 
         homeRenderer = new HomeRenderer();
 
-        homeDashboard.init(homeRenderer);
+        genericDashboard.init(homeRenderer);
+
+
+      }
+
+      if($("#invoice").length > 0){
+
+        invoiceRenderer = new InvoiceRenderer();
+
+        genericDashboard.init(invoiceRenderer);
 
 
       }
