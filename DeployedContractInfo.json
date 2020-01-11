@@ -16,7 +16,7 @@
       "testnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "payspec": {"name":"PaySpec", "blockchain_address":"0xd9785ab439c4b0f5e8e005e245f2ae80eb403e9c"}
+                "payspec": {"name":"PaySpec", "blockchain_address":"0x1714129c327f83387a039689f29c11d9aad6f1ac"}
               }
             }
     }

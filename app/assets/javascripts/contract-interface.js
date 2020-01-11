@@ -15,12 +15,16 @@ module.exports = class ContractInterface  {
 
 
 
-  static getTokenContract(web3,env)
+  static getTokenContract(web3,env,tokenAddress)
   {
 
   //  return new web3.eth.Contract(tokenContractJSON.abi,ContractInterface.getTokenContractAddress(env))
+    if (tokenAddress == null )
+    {
+      tokenAddress = ContractInterface.getTokenContractAddress(env);
+    }
 
-    return   web3.eth.contract(tokenContractJSON.abi).at(ContractInterface.getTokenContractAddress(env))
+    return   web3.eth.contract(tokenContractJSON.abi).at(tokenAddress)
 
   }
 
