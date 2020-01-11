@@ -186,6 +186,13 @@
               </div>
              </div>
 
+             <div class="field" v-if='predictedUUID'>
+               <label class="label">   </label>
+               <div class="control">
+                <a v-bind:href="predictedInvoiceURL"> View and Pay Invoice </a>
+               </div>
+              </div>
+
 
     	      </div>
 
@@ -197,7 +204,7 @@
 
 
 
-
+<!--
       <div class="columns">
 
         <div class="content column is-6 is-offset-3">
@@ -213,12 +220,7 @@
             <div class="column">
                <h4 class=" is-size-4 is-4 is-spaced">Pay Invoice</h4>
             </div>
-            <!-- <div class="column">
-              <div class="pull-right" v-if='showAvailability' v-cloak>
-                <span class="tag is-success" v-if='nametagAvailable'>Available</span>
-                <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
-              </div>
-            </div> -->
+
           </div>
 
 
@@ -247,7 +249,7 @@
 
 
       </div>
-
+-->
 
 
 

@@ -50,9 +50,13 @@ export default class HomeRenderer {
              refNumber: '',
              web3connected: false,
              nametagAvailable: true,
-             predictedUUID: null
+             predictedUUID: null,
+             predictedInvoiceURL: '/invoice.html?uuid='
+
+
           },
           methods: {
+
                 keyUp: function (event) {
                    //Vue.set(createInvoiceInput, 'showAvailability', false)
                 },
@@ -82,7 +86,8 @@ export default class HomeRenderer {
                   await self.createNewInvoice( newInvoiceData )
 
                   Vue.set(createInvoiceInput, 'predictedUUID', computedInvoiceUUID)
-                }
+                  Vue.set(createInvoiceInput, 'predictedInvoiceURL', '/invoice.html?uuid='+computedInvoiceUUID)
+            }
             }
         })
 

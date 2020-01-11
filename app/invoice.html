@@ -12,55 +12,11 @@
     <div class="hero-head">
       <section class="hero is-primary is-medium" id="contact">
 	<div class="hero-body">
-	  <div class="container">
 
-
-          <h2> Invoice QR Code </h2>
-        <canvas id='qr-code-canvas' height='512' width='512'>
-
-        </canvas>
-
-
-
-	    <div class="header-buttons pull-right">
-
-        <span class="control ">
-          <a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
-            <span class="icon">
-              <i class="fab fa-github"></i>
-            </span>
-            <span>Github</span>
-          </a>
-        </span>
-
-	      <span class="control ">
-      		<a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
-      		  <span class="icon">
-      		    <i class="fab fa-ethereum"></i>
-      		  </span>
-      		  <span>PaySpec API</span>
-      		</a>
-	      </span>
-
-
-
-	    </div>
-	  </div>
-	</div>
-      </section>
-    </div>
-    <!-- end of header -->
-
-    <!-- example content block -->
-    <div class="content-block">
-      <section class="hero">
-	<div class="hero-body">
-	  <div class="container">
+    <div class="container">
 
 
       <div id="eth-container" class="eth-container box" v-cloak    >
-
-
 
 
         <div class="columns">
@@ -105,6 +61,114 @@
       </div>
 
 
+    </div> <!-- container-->
+
+    <div class="whitespace-md"></div>
+    
+	  <div class="container">
+
+      <div class="columns">
+        <div class="column">
+
+          <h2> Invoice QR Code (EIP 681) </h2>
+          <canvas id='qr-code-canvas' height='512' width='512'>
+
+          </canvas>
+
+        </div>
+
+        <div class="column">
+          <div class="container" id='invoice-data' v-cloak>
+
+            <div class="table-container">
+
+              <h2> Invoice Data </h2>
+              <table class="table is-bordered">
+                <thead>
+
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>UUID </td>
+                    <td>{{ invoiceUUID }}</td>
+                  </tr>
+                  <tr>
+                    <td>Description </td>
+                    <td>{{ description }}</td>
+                  </tr>
+                  <tr>
+                    <td>Reference Number </td>
+                    <td>{{ referenceNumber }}</td>
+                  </tr>
+                  <tr>
+                    <td>Recipient Address </td>
+                    <td>{{ recipientAddress }}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Token Address </td>
+                    <td>{{ tokenAddress }}</td>
+                  </tr>
+                  <tr>
+                    <td>Token Amount Due</td>
+                    <td>{{ tokenAmount }}</td>
+                  </tr>
+                  <tr>
+                    <td>Paid?</td>
+                    <td>{{ alreadyPaid }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+
+          </div>
+        </div>
+      </div><!--columns-->
+      </div><!--container-->
+
+
+
+	    <div class="header-buttons pull-right">
+
+        <span class="control ">
+          <a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+            <span>Github</span>
+          </a>
+        </span>
+
+	      <span class="control ">
+      		<a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
+      		  <span class="icon">
+      		    <i class="fab fa-ethereum"></i>
+      		  </span>
+      		  <span>PaySpec API</span>
+      		</a>
+	      </span>
+
+	    </div>
+
+
+
+	  </div> <!-- hero body -->
+
+      </section>
+    </div> <!-- hero head -->
+    <!-- end of header -->
+
+    <!-- example content block -->
+    <div class="content-block">
+      <section class="hero">
+  	<div class="hero-body">
+  	  <div class="container">
+
+
+
+
 
 
       <div class="columns">
@@ -141,7 +205,7 @@
 
 
             <div class="pull-right">
-              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
+              <div   class="button is-large" v-on:click='onSubmitNewInvoice'>
                 <span class=" ">
                   <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
@@ -164,6 +228,7 @@
 	</div>
       </section>
       <hr/>
+
     </div>
     <!-- end of example block -->
 
