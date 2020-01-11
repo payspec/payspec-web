@@ -9,7 +9,7 @@ var ethHelper;
 export default class GenericDashboard {
 
 
-  init(renderer)
+  init(renderer, request)
   {
     setInterval( function(){
          renderer.update();
@@ -24,7 +24,7 @@ export default class GenericDashboard {
 
 
 
-    renderer.init( ethHelper );
+    renderer.init( ethHelper, request  );
 
     ethHelper.bindOnConnected( function() {
         renderer.onWeb3Connected();

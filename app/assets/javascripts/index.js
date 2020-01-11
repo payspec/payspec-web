@@ -14,6 +14,9 @@ import GenericDashboard from './generic-dashboard'
 import InvoiceRenderer from './invoice-renderer'
 
 
+var url = require('url');
+
+
 var genericDashboard = new GenericDashboard();
 
 
@@ -34,11 +37,23 @@ var navbar = new Vue({
 
 $(document).ready(function(){
 
+    var urlstring = window.location.href ;
+
+    console.log('urlstring',urlstring)
+
+
+          var url_parts = url.parse(urlstring, true);
+          var query = url_parts.query;
+
+          console.log(query)
+
+
+
       if($("#home").length > 0){
 
         homeRenderer = new HomeRenderer();
 
-        genericDashboard.init(homeRenderer);
+        genericDashboard.init(homeRenderer, query);
 
 
       }
@@ -47,7 +62,7 @@ $(document).ready(function(){
 
         invoiceRenderer = new InvoiceRenderer();
 
-        genericDashboard.init(invoiceRenderer);
+        genericDashboard.init(invoiceRenderer, query);
 
 
       }

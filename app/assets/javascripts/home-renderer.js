@@ -32,7 +32,7 @@ var stats;
 
 export default class HomeRenderer {
 
-    init( ethHelper  )
+    init( ethHelper, params  )
     {
 
       var self = this;

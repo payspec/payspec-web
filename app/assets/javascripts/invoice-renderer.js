@@ -2,12 +2,19 @@ var QRCode = require('qrcode')
 var qrcodecanvas = document.getElementById('qr-code-canvas')
 
 
+
+
 export default class InvoiceRenderer {
 
 
 
-    init()
+    init( ethHelper, params )
     {
+
+    console.log(params)
+
+
+
 
       //https://github.com/soldair/node-qrcode
       var options = {
