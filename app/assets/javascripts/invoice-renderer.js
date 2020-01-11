@@ -187,8 +187,8 @@ export default class InvoiceRenderer {
        })
   });
 
+    console.log('invoice exists??')
     Vue.set(invoiceData, 'invoiceExists', invoiceExists )
-
 
 
 

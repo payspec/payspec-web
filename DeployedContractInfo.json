@@ -4,19 +4,19 @@
       "mainnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
-                 "payspec": {"name":"PaySpec", "blockchain_address":"0x0"}
+                 "payspec": {"name":"PaySpec", "blockchain_address":"0xeaa9ea38163002d665b341adf522d5afcc17fd70"}
               }
             },
       "staging": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                 "payspec": {"name":"PaySpec", "blockchain_address":"0x0"}
+                 "payspec": {"name":"PaySpec", "blockchain_address":"0x2b90296e310b8404194e7c0ab96125865bce0a0b"}
               }
             },
       "testnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "payspec": {"name":"PaySpec", "blockchain_address":"0x5c51e676d16398f79154a29e4816a9b72e581bcf"}
+                "payspec": {"name":"PaySpec", "blockchain_address":"0x2b90296e310b8404194e7c0ab96125865bce0a0b"}
               }
             }
     }
