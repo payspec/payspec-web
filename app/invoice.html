@@ -65,9 +65,9 @@
 
     <div class="whitespace-md"></div>
 
-	  <div class="container">
+	  <div class="container" id='invoice-data'  v-cloak>
 
-      <div class="columns">
+      <div class="columns" v-if='invoiceExists' >
         <div class="column">
 
           <h2> Invoice QR Code (EIP 681) </h2>
@@ -78,7 +78,7 @@
         </div>
 
         <div class="column">
-          <div class="container" id='invoice-data' v-cloak>
+          <div class="container" >
 
             <div class="table-container">
 
@@ -126,6 +126,22 @@
           </div>
         </div>
       </div><!--columns-->
+
+      <div class="container" v-if='!invoiceExists'>
+
+      <div class="centered">
+          Searching for invoice...
+      </div>
+
+      <br>
+
+      <div class="centered">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+      </div>
+
+      </div>
+
       </div><!--container-->
 
 

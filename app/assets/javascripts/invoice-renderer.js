@@ -5,7 +5,6 @@ import Vue from 'vue';
 var ethUrlParser = require('eth-url-parser')
 
 var QRCode = require('qrcode')
-var qrcodecanvas = document.getElementById('qr-code-canvas')
 
 const ContractInterface = require('./contract-interface')
 
@@ -42,13 +41,17 @@ export default class InvoiceRenderer {
     {
       console.log(' on web3 !!')
 
-        this.generateQRCode()
+      var self = this;
+
+
 
         this.initInvoiceDataTable()
 
         Vue.set(payInvoiceInput, 'web3connected', true)
 
-        await this.loadInvoiceData()
+        await this.loadInvoiceData( self )
+
+        setInterval(function(){  self.loadInvoiceData(self)  }, 10000);
 
 
     }
@@ -68,6 +71,7 @@ export default class InvoiceRenderer {
           el: '#invoice-data',
           data: {
              invoiceUUID: invoiceUUID,
+             invoiceExists: false,
              description: '',
              referenceNumber: '',
              recipientAddress: '',
@@ -83,6 +87,10 @@ export default class InvoiceRenderer {
                   console.log('input change',  this.inputName, event)
 
                 //  self.checkNameAvailability( this.inputName );
+                },
+                updated() {
+                  console.log('on update')
+
                 },
                 onSubmitNewInvoice: function (event){
                   console.log('pay invoice ', this.invoiceUUID)
@@ -153,7 +161,7 @@ export default class InvoiceRenderer {
 
     }
 
-    async loadInvoiceData()
+    async loadInvoiceData( self )
     {
 
       var web3 = ethereumHelper.getWeb3Instance();
@@ -164,10 +172,25 @@ export default class InvoiceRenderer {
 
       var paySpecContract = ContractInterface.getPaySpecContract(web3,env)
 
+      console.log('load invoice data')
       console.log(invoiceUUID)
       console.log( paySpecContract )
 
   //    console.log( paySpecContract.getDescription(invoiceUUID).call()  )
+
+
+  let invoiceExists = await new Promise(resolve => {
+    paySpecContract.invoiceExists(invoiceUUID,  function(error,response){
+        console.log('res', response )
+        console.log('error', error)
+       resolve( response  );
+       })
+  });
+
+    Vue.set(invoiceData, 'invoiceExists', invoiceExists )
+
+
+
 
       let amountDue = await new Promise(resolve => {
         paySpecContract.getAmountDue(invoiceUUID,  function(error,response){
@@ -235,6 +258,13 @@ export default class InvoiceRenderer {
 
 
 
+          Vue.nextTick(function () {
+              // do something cool
+              console.log('vue next tick ')
+
+              self.generateQRCode()
+            })
+
 
     }
 
@@ -285,6 +315,9 @@ export default class InvoiceRenderer {
 
       console.log( ' creating QR code with: ', encodedData)
       //encodeddata = 'ethereum:0xb6ed7644c69416d67b522e20bc294a9a9b405b31/approve?address=0xb6ed7644c69416d67b522e20bc294a9a9b405b31&uint256=100'
+
+      var qrcodecanvas = document.getElementById('qr-code-canvas')
+
 
       QRCode.toCanvas(qrcodecanvas, encodedData, options, function (error) {
         if (error) console.error(error)
