@@ -76,11 +76,12 @@ export default class HomeRenderer {
                     tokenAmount:this.tokenAmount,
                     description:this.description,
                     refNumber:this.refNumber,
-                    blockExpiresAt:0
+                    blockExpiresAt:0,
+                    msgSenderAddress: ethereumHelper.getConnectedAccountAddress()
                   }
 
 
-                  var computedInvoiceUUID = await self.getInvoiceUUID( newInvoiceData , ethereumHelper )
+                  var computedInvoiceUUID = await self.getInvoiceUUID( newInvoiceData  )
                   console.log('computedInvoiceUUID',computedInvoiceUUID)
 
                   await self.createNewInvoice( newInvoiceData )
@@ -194,11 +195,11 @@ export default class HomeRenderer {
 
     }
 
-    async getInvoiceUUID( newInvoiceData, ethHelper )
+    async getInvoiceUUID( newInvoiceData  )
     {
-       console.log('sha 3 inputs ', ethHelper.getConnectedAccountAddress(), newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress)
+       console.log('sha 3 inputs ', newInvoiceData.msgSenderAddress, newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress)
 
-      var digest = web3utils.soliditySha3({t: 'address', v: ethHelper.getConnectedAccountAddress()}, {t: 'uint256', v: newInvoiceData.refNumber }, {t: 'string', v: newInvoiceData.description }, {t: 'address', v: newInvoiceData.tokenAddress }, {t: 'uint256', v: newInvoiceData.tokenAmount }, {t: 'address', v: newInvoiceData.recipientAddress });
+      var digest = web3utils.soliditySha3({t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.msgSenderAddress)}, {t: 'uint256', v: newInvoiceData.refNumber }, {t: 'string', v: newInvoiceData.description }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.tokenAddress) }, {t: 'uint256', v: newInvoiceData.tokenAmount }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.recipientAddress) });
 
       var digestBytes32 = web3utils.hexToBytes(digest)
       console.log('digestBytes32',digestBytes32)
