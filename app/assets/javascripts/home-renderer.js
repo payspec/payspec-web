@@ -199,7 +199,7 @@ export default class HomeRenderer {
     {
       console.log('sha 3 inputs ',   newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress , newInvoiceData.ethBlockExpiresAt)
 
-      var digest = web3utils.soliditySha3({t: 'uint256', v: newInvoiceData.refNumber }, {t: 'string', v: newInvoiceData.description }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.tokenAddress) }, {t: 'uint256', v: newInvoiceData.tokenAmount }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.recipientAddress) , {t: 'uint256', v: newInvoiceData.ethBlockExpiresAt }});
+      var digest = web3utils.soliditySha3({t: 'uint256', v: newInvoiceData.refNumber }, {t: 'string', v: newInvoiceData.description }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.tokenAddress) }, {t: 'uint256', v: newInvoiceData.tokenAmount }, {t: 'address', v: web3utils.toChecksumAddress(newInvoiceData.recipientAddress)} , {t: 'uint256', v: newInvoiceData.ethBlockExpiresAt } );
 
       var digestBytes32 = web3utils.hexToBytes(digest)
       console.log('digestBytes32',digestBytes32)
@@ -231,7 +231,7 @@ export default class HomeRenderer {
       // await web3.eth.enable();
 
       var response =  await new Promise(function (result,error) {
-         paySpecContract.createInvoice.sendTransaction(newInvoiceData.refNumber,newInvoiceData.description,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.blockExpiresAt, function(err,res){
+         paySpecContract.createInvoice.sendTransaction(newInvoiceData.refNumber,newInvoiceData.description,newInvoiceData.tokenAddress,newInvoiceData.tokenAmount,newInvoiceData.recipientAddress,newInvoiceData.ethBlockExpiresAt, function(err,res){
             if(err){ return error(err)}
 
             //console.log('res ', res)
