@@ -10,13 +10,13 @@
       "staging": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                 "payspec": {"name":"PaySpec", "blockchain_address":"0x685d1d7c4ee6611387645cef869054cdc9fdcc03"}
+                 "payspec": {"name":"PaySpec", "blockchain_address":"0x3487f239935759b38a2f92ce62e80bae7cc74f97"}
               }
             },
       "testnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "payspec": {"name":"PaySpec", "blockchain_address":"0x685d1d7c4ee6611387645cef869054cdc9fdcc03"}
+                "payspec": {"name":"PaySpec", "blockchain_address":"0x3487f239935759b38a2f92ce62e80bae7cc74f97"}
               }
             }
     }
